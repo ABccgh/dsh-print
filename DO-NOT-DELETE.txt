@@ -1,0 +1,24 @@
+THIS DIRECTORY IS THE LIVE INSTALL TARGET OF A DSH PROFILE BUNDLE.
+DO NOT DELETE, MOVE, OR RENAME IT.
+
+profile : <DSH_HOME>\profiles\desktop
+junction: <DSH_HOME>\profiles\desktop\node_modules\@local\print
+bundle  : @local/print  (打印：7 个 print_* 工具)
+
+Deleting or moving this directory removes every print_* tool until the bundle is
+reinstalled with:
+
+    plugin_manager  action: install_bundle  target: %USERPROFILE%\dsh-bundles\print
+
+---
+
+This file lives in the repository on purpose: the sync command below uses /MIR,
+which deletes any destination file that is not in the source. Keeping the marker
+in the source is what stops the sync from deleting it.
+
+编辑代码时改仓库，再同步过来：
+
+    robocopy "<仓库路径>" "%USERPROFILE%\dsh-bundles\print" /MIR /XD .git test node_modules
+
+同步后必须重启 DSH 才会生效（Host 进程会缓存已加载的 ESM 模块）；只改
+cordis.patch.yml 的配置值则关开一次插件即可，不必重启。

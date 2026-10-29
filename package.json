@@ -1,0 +1,36 @@
+{
+  "name": "@local/print",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Printing for DeepSeek Harness: local printers, PDFs, images, Office documents and CamScanner scans",
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/helper/*.ps1",
+    "lib/helper/PROTOCOL.md",
+    "locale/*.json",
+    "icon.svg",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "meta": {
+    "title": "Printing",
+    "description": "Print PDFs, images and Office documents to local printers, and print scans from the CamScanner (全能扫描王) local library."
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "test:live": "node --test test/live.test.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+# dsh-print —— DSH 打印插件
+#
+# 本文件既是 bundle 的 patch 层，也是这份插件的运行时配置。
+# 真正被读取的是**安装副本**里的这一份（%USERPROFILE%\dsh-bundles\print\cordis.patch.yml），
+# 不是仓库里的这份——改配置要改副本。
+#
+# 生效方式：仓库 → robocopy 到 %USERPROFILE%\dsh-bundles\print → 重启 DSH（或把插件关开一次）。
+#
+# 安全相关字段（默认值偏保守）：
+#   confirmRequired   —— 所有打印动作先出计划，必须再调一次带 confirm=true 才真正打印。
+#   dryRun            —— 只回报计划，绝不向打印队列提交任务。
+#   allowPromptPrinters —— Microsoft Print to PDF / XPS 这类需要弹框选输出文件的打印机默认拒绝。
+#   maxFiles/maxPages —— 单次调用的文件数与页数上限。
+#   auditEnabled      —— 每次打印写一条 JSONL 审计记录。
+- insert:
+    - id: print
+      name: '@local/print'
+      config:
+        # 空串 = 自动探测
+        powershellPath: ''
+        helperPath: ''
+        # 单次打印/渲染超时（毫秒）
+        timeoutMs: 180000
+        # 状态/队列这类轻量 helper 调用的超时
+        requestTimeoutMs: 15000
+        # 空串 = 系统默认打印机
+        defaultPrinter: ''
+        confirmRequired: true
+        dryRun: false
+        maxFiles: 20
+        maxPages: 300
+        allowPromptPrinters: false
+        auditEnabled: true
+        # 空串 = %LOCALAPPDATA%\dsh-print\audit.jsonl
+        auditFile: ''
+        camscanner:
+          enabled: true
+          # 空串 = 自动探测 %APPDATA%\CamScanner\Camscanner\camscanner.db
+          dbPath: ''
+        office:
+          enabled: true
+          # 空串 = 自动探测：LibreOffice Kit（%LOCALAPPDATA%\dsh-print\office-kit）优先，
+          # 其次系统 LibreOffice 的 soffice.exe。
+          sofficePath: ''
+          kitCliPath: ''
+          # Kit 的 CLI 是 Node 脚本，需要一个 Node 运行时；空串 = 自动探测 DSH 运行时自带的 node.exe
+          nodePath: ''
+          timeoutMs: 120000
